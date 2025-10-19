@@ -2,6 +2,8 @@ const buttons = document.querySelectorAll(".choice");
 const resultText = document.getElementById("result-text");
 const playerScoreSpan = document.getElementById("player-score");
 const computerScoreSpan = document.getElementById("computer-score");
+const playerImage = document.getElementById("player-image");
+const computerImage = document.getElementById("computer-image");
 
 let playerScore = 0;
 let computerScore = 0;
@@ -10,6 +12,11 @@ buttons.forEach(button => {
   button.addEventListener("click", () => {
     const playerChoice = button.dataset.choice;
     const computerChoice = getComputerChoice();
+
+    // Actualiza imágenes
+    playerImage.src = `img/${playerChoice}.png`;
+    computerImage.src = `img/${computerChoice}.png`;
+
     const result = determineWinner(playerChoice, computerChoice);
     updateUI(result, playerChoice, computerChoice);
   });
@@ -39,15 +46,22 @@ function determineWinner(player, computer) {
 
 function updateUI(result, player, computer) {
   if (result === "empate") {
-    resultText.textContent = `Empate! Ambos eligieron ${player}`;
+    resultText.textContent = `🤝 Empate! Ambos eligieron ${player}`;
+    resultText.style.color = "#FFD700";
   } else if (result === "jugador") {
-    resultText.textContent = `Ganaste! ${capitalize(player)} vence a ${computer}`;
+    resultText.textContent = `🎉 Ganaste! ${capitalize(player)} vence a ${computer}`;
+    resultText.style.color = "#00FF7F";
   } else {
-    resultText.textContent = `Perdiste! ${capitalize(computer)} vence a ${player}`;
+    resultText.textContent = `💀 Perdiste! ${capitalize(computer)} vence a ${player}`;
+    resultText.style.color = "#FF6347";
   }
 
   playerScoreSpan.textContent = playerScore;
   computerScoreSpan.textContent = computerScore;
+
+  // Animación
+  computerImage.style.transform = "scale(1.2)";
+  setTimeout(() => computerImage.style.transform = "scale(1)", 200);
 }
 
 function capitalize(word) {
